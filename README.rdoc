@@ -3,7 +3,7 @@
 Description goes here.
 
 == Contributing to nitrogen
- 
+
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it.
 * Fork the project.
@@ -17,3 +17,4 @@ Description goes here.
 Copyright (c) 2013 Joseph Jaber. See LICENSE.txt for
 further details.
 
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/7f62cda8c7463b7a556e9085b8100926 "githalytics.com")](http://githalytics.com/josephjaber/nitrogen)
