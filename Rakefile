@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "nitrogen"
   gem.homepage = "http://github.com/josephjaber/nitrogen"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{A better way to manage your seeds.}
+  gem.description = %Q{A better way to manage your seeds.}
   gem.email = "mail@josephjaber.com"
   gem.authors = ["Joseph Jaber"]
   # dependencies defined in Gemfile
