@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "lib/nitrogen.rb",
+    "nitrogen.gemspec",
     "test/helper.rb",
     "test/test_nitrogen.rb"
   ]
