@@ -12,30 +12,49 @@ gem 'nitrogen'
 
 ## Usage
 
-Configure fertilizers and dependencies in `config/seeds.rb`
+Configure fertilizers and dependencies in `config/seeds.rb`. Nest configurations
+for dependant models. Define the desired `:frequency` for a dependant model to
+appear. In the following example, a given `User` will have up to 4 `Post` records
+associated with it. If no `:frequency` is specified, the default behavior is to
+create one dependant model per parent model.
+
+Configure a seeded model to inherit from a pre-existing fertilizer. More on
+Fertilizers below.
 
 ```ruby
 # config/seeds.rb
 sprout :users do
   sprout :addresses
   sprout :posts, frequency: 0..4
-  sprout :aliases, fertilizer: :addresses
+  sprout :reviews, fertilizer: :posts
 end
 
-sprout :inventory_items
-sprout :shipments
+sprout :categories
+sprout :ratings
 ```
 
-Define Fertilizers. Fertilizers use `FactoryGirl` behind the scenes. Define attributes and create fake data with `Forgery`. Fake data will be automatically populated with basic Forgeries based on attribute data type. Define your own forgeries for automatic use in your Fertilizer.
+Define Fertilizers to populate your models. Fertilizers use `FactoryGirl` behind
+the scenes. Define attributes and create fake data with `Forgery`. Fake data
+will be automatically populated with basic Forgeries based on attribute data
+type. Define custom forgeries for automatic use in your Fertilizer. Custom
+forgeries are automatically assigned to the models attribute based on name.
+Override any default data population by specifying a `nil` value for that
+attribute.
+
+Configure Fertilizer behavior for each environment, or run any setup code
+necessary beforehand. Configure factories to run in specific environments.
 
 ```ruby
 # config/seeds/fertilizers/user_fertilizer.rb
 UserFertilizer < Nitrogen::Fertilizer
 
   all_environments do
-    first_or_create(first_name: 'John', last_name: 'Smith', email: 'jsmith@gmail.com')
-    first_or_create(first_name: 'Sally', last_name: 'Smith', email: 'ssmith@gmail.com')
+    first_or_create(first_name: 'Jonny', last_name: 'Smith', email: 'jsmith@gmail.com')
+    first_or_create(first_name: 'Sally', last_name: 'Jones', email: 'sjones@gmail.com')
+== Copyright
   end
+Copyright (c) 2013 Joseph Jaber. See LICENSE.txt for
+further details.
 
   factory_for :development, :staging do
     first_name { Forgery(:person).first_name }
@@ -51,9 +70,8 @@ UserFertilizer < Nitrogen::Fertilizer
 end
 ```
 
-== Copyright
+## Unresolved Requirements
 
-Copyright (c) 2013 Joseph Jaber. See LICENSE.txt for
-further details.
+* Automatic behavior of generators.
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/7f62cda8c7463b7a556e9085b8100926 "githalytics.com")](http://githalytics.com/josephjaber/nitrogen)
