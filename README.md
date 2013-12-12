@@ -13,10 +13,10 @@ gem 'nitrogen'
 ## Usage
 
 Configure fertilizers and dependencies in `config/seeds.rb`. Nest configurations
-for dependant models. Define the desired `:frequency` for a dependant model to
+for dependent models. Define the desired `:frequency` for a dependent model to
 appear. In the following example, a given `User` will have up to 4 `Post` records
 associated with it. If no `:frequency` is specified, the default behavior is to
-create one dependant model per parent model.
+create one dependent model per parent model.
 
 Configure a seeded model to inherit from a pre-existing fertilizer. More on
 Fertilizers below.
