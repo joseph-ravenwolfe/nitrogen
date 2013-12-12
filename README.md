@@ -51,10 +51,7 @@ UserFertilizer < Nitrogen::Fertilizer
   all_environments do
     first_or_create(first_name: 'Jonny', last_name: 'Smith', email: 'jsmith@gmail.com')
     first_or_create(first_name: 'Sally', last_name: 'Jones', email: 'sjones@gmail.com')
-== Copyright
   end
-Copyright (c) 2013 Joseph Jaber. See LICENSE.txt for
-further details.
 
   factory_for :development, :staging do
     first_name { Forgery(:person).first_name }
