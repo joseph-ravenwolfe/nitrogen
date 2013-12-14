@@ -13,10 +13,14 @@ gem 'nitrogen'
 ## Usage
 
 Configure fertilizers and dependencies in `config/seeds.rb`. Nest configurations
-for dependent models. Define the desired `:frequency` for a dependent model to
-appear. In the following example, a given `User` will have up to 4 `Post` records
-associated with it. If no `:frequency` is specified, the default behavior is to
-create one dependent model per parent model.
+for dependent models. Define the desired `:volume` for a dependent model to
+appear. In the following example, a given `User` will have up to 4 `Post`
+records associated with it. If no `:volume` is specified, the default behavior
+is to create one dependent model. In addition to volume, the ability to specify
+a desired `:frequency` is provided. Frequency can be supplied as a decimal
+proportion or a static integer. In the following example, a given `User` has a
+15% percent chance of having between 0 and 4 posts. In the following example,
+every 10 users will have an associated address.
 
 Configure a seeded model to inherit from a pre-existing fertilizer. More on
 Fertilizers below.
@@ -24,8 +28,8 @@ Fertilizers below.
 ```ruby
 # config/seeds.rb
 sprout :users do
-  sprout :addresses
-  sprout :posts, frequency: 0..4
+  sprout :addresses, frequency: 10
+  sprout :posts, volume: 0..4, frequency: 0.15
   sprout :reviews, fertilizer: :posts
 end
 
