@@ -43,14 +43,20 @@ attribute.
 
 Configure Fertilizer behavior for each environment, or run any setup code
 necessary beforehand. Configure factories to run in specific environments.
+Set a flag to determine which fields to find records by so duplicate seeds
+are not created. Deprecate existing seeds to ensure they are no longer
+present. Deprecated seeds are destroyed by provided attributes.
 
 ```ruby
 # config/seeds/fertilizers/user_fertilizer.rb
 UserFertilizer < Nitrogen::Fertilizer
+  unique_by :email
 
   all_environments do
-    first_or_create(first_name: 'Jonny', last_name: 'Smith', email: 'jsmith@gmail.com')
-    first_or_create(first_name: 'Sally', last_name: 'Jones', email: 'sjones@gmail.com')
+    create(first_name: 'Jonny', last_name: 'Smith', email: 'jsmith@gmail.com')
+    create(first_name: 'Sally', last_name: 'Jones', email: 'sjones@gmail.com')
+
+    deprecate(email: 'deprecated@gmail.com')
   end
 
   factory_for :development, :staging do
@@ -67,8 +73,6 @@ UserFertilizer < Nitrogen::Fertilizer
 end
 ```
 
-## Unresolved Requirements
-
-* Automatic behavior of generators.
+`rails generate` hooks are also provided for the `model`, and `scaffold` generators. A `rails generate seed` command is also provided to bootstrap a new seed.
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/7f62cda8c7463b7a556e9085b8100926 "githalytics.com")](http://githalytics.com/josephjaber/nitrogen)
