@@ -97,35 +97,42 @@ UserFertilizer < Nitrogen::Fertilizer
 end
 ```
 
-You can randomize the the number of records that are created by supplying a
-`frequency` option in your seed manifest. This can be useful for randomizing
+You can randomize the number of records that are created by supplying a
+`volume` option in your seed manifest. This can be useful for randomizing
 the number of associated child records in a given relationship. In the
 following example, a given User will have up to 4 Post records associated with
-it. If no `frequency` is specified, the default behavior is to create one
+it. If no `volume` is specified, the default behavior is to create one
 dependent model per parent model.
 
 ```ruby
 # config/seeds.rb
 sprout :users do
-  sprout :posts, frequency: 1..4
+  sprout :posts, volume: 1..4
 end
 ```
 
-## Other Usage
-
-Configure a seeded model to inherit from a pre-existing fertilizer. More on
-Fertilizers below.
+In addition to volume, you can also supply a `frequency` option to specify the
+chance that any records will be created for an associated model. This may be
+useful for realistically representing the volume of dependent models in your
+data. Frequency can be supplied as a decimal proportion or a static integer
+interval. In the following example, a given Post would have a 60% chance to
+have an associated Comment. Posts that have any Comments at all are usually
+interesting, and therefore prone to having anywhere from 10 to 50 Comments.
+Every 10 Posts will make it into a Publication.
 
 ```ruby
 # config/seeds.rb
-sprout :users do
-  sprout :addresses
-  sprout :posts, frequency: 0..4
-  sprout :reviews, fertilizer: :posts
+sprout :posts do
+  sprout :comments, frequency: 0.5, volume: 10..50
+  sprout :publication, frequency: 10
 end
+```
 
-sprout :categories
-sprout :ratings
+You can also explicitly set the Fertilizer to be used by supplying a
+`fertilizer` option.
+
+```ruby
+sprout :reviews, fertilizer: :posts
 ```
 
 Define Fertilizers to populate your models. Fertilizers use `FactoryGirl` behind
