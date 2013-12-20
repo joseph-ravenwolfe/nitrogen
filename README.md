@@ -98,13 +98,15 @@ class UserFertilizer < Nitrogen::Fertilizer
 end
 ```
 
-
 ## Seeding Fake Development Data
 
 You can use Fertilizers to generate fake data with the `factory_for` helper.
 Nitrogen uses [FactoryGirl](https://github.com/thoughtbot/factory_girl) behind
 the scenes to generate fake data. Nitrogen also provides access to
 [Forgery](https://github.com/sevenwire/forgery) to create fake data.
+
+Provide the `factory_for` helper the number of records to create with a list
+of environments you would like the factory to apply to.
 
 ```ruby
 # config/seeds/fertilizers/user_fertilizer.rb
@@ -114,7 +116,7 @@ class UserFertilizer < Nitrogen::Fertilizer
     # Seed Production and Other Data
   end
 
-  factory_for :development do
+  factory_for 200, :development, :test do
     first_name { Forgery(:person).first_name }
     last_name { Forgery(:person).last_name }
     email { Forgery(:person).email }
@@ -188,6 +190,5 @@ a new seed.
 ## Unresolved Items
 * Defining Nitrogen's philosophy
 * Defining Nitrogen's Fertilizer API for record creation
-* Defining the number of seeds that are created
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/7f62cda8c7463b7a556e9085b8100926 "githalytics.com")](http://githalytics.com/josephjaber/nitrogen)
