@@ -30,22 +30,28 @@ this to configure the models you would like to seed and in which order. You
 can seed a model with the following.
 
 ```ruby
-sprout :users
-sprout :posts
+# config/seeds.rb
+Nitrogen::Seeds.plant do
+  sprout :users
+  sprout :posts
+end
 ```
 
 You can also specify which models depend on the existance of other models when
 defining your seeds.
 
 ```ruby
-sprout :users do
-  sprout :comments
-  sprout :blog_posts do
-    sprout :related_posts
+# config/seeds.rb
+Nitrogen::Seeds.plant do
+  sprout :users do
+    sprout :comments
+    sprout :blog_posts do
+      sprout :related_posts
+    end
   end
+  
+  sprout :countries
 end
-
-sprout :countries
 ```
 
 ## Defining Your Seeds
@@ -59,12 +65,12 @@ data might only be used in certain environments. You can configure this in your
 model's Fertilizer like so:
 
 ```ruby
-UserFertilizer < Nitrogen::Fertilizer
+# config/seeds/fertilizers/user_fertilizer.rb
+class UserFertilizer < Nitrogen::Fertilizer
 
   all_environments do
     create(first_name: 'Jonny', last_name: 'Smith', email: 'jsmith@gmail.com')
     create(first_name: 'Sally', last_name: 'Jones', email: 'sjones@gmail.com')
-    expire(first_name: 'Sammy', last_name: 'Lopez', email: 'slopez@gmail.com')
   end
 
   environment :development, :test do
@@ -74,6 +80,25 @@ UserFertilizer < Nitrogen::Fertilizer
 end
 ```
 
+Set a flag to determine which fields to find records by so duplicate seeds
+are not created. Expire existing seeds to ensure they are no longer
+present. Expired seeds are found and destroyed by the attributes provided.
+
+```ruby
+# config/seeds/fertilizers/user_fertilizer.rb
+class UserFertilizer < Nitrogen::Fertilizer
+  unique_by :email
+
+  all_environments do
+    create(first_name: 'Jonny', last_name: 'Smith', email: 'jsmith@gmail.com')
+    expire(first_name: 'Sally', last_name: 'Jones', email: 'sjones@gmail.com')
+    expire(first_name: 'Sammy', last_name: 'Lopez', email: 'slopez@gmail.com')
+  end
+
+end
+```
+
+
 ## Seeding Fake Development Data
 
 You can use Fertilizers to generate fake data with the `factory_for` helper.
@@ -82,7 +107,8 @@ the scenes to generate fake data. Nitrogen also provides access to
 [Forgery](https://github.com/sevenwire/forgery) to create fake data.
 
 ```ruby
-UserFertilizer < Nitrogen::Fertilizer
+# config/seeds/fertilizers/user_fertilizer.rb
+class UserFertilizer < Nitrogen::Fertilizer
 
   all_environments do
     # Seed Production and Other Data
@@ -92,6 +118,26 @@ UserFertilizer < Nitrogen::Fertilizer
     first_name { Forgery(:person).first_name }
     last_name { Forgery(:person).last_name }
     email { Forgery(:person).email }
+  end
+
+end
+```
+
+You can customize fake data by defining your own forgeries. Custom
+forgeries are automatically assigned to the model's corresponding
+attribute based on name.
+
+```ruby
+# config/seeds/fertilizers/user_fertilizer.rb
+class UserFertilizer < Nitrogen::Fertilizer
+
+  factory_for :development do
+    # Declare other attributes...
+    spy_alias
+  end
+
+  forgery_for :spy_alias do
+    dictionaries[:spy_aliases].random
   end
 
 end
@@ -133,46 +179,6 @@ You can also explicitly set the Fertilizer to be used by supplying a
 
 ```ruby
 sprout :reviews, fertilizer: :posts
-```
-
-Define Fertilizers to populate your models. Fertilizers use `FactoryGirl` behind
-the scenes. Define attributes and create fake data with `Forgery`. Fake data
-will be automatically populated with basic Forgeries based on attribute data
-type. Define custom forgeries for automatic use in your Fertilizer. Custom
-forgeries are automatically assigned to the models attribute based on name.
-Override any default data population by specifying a `nil` value for that
-attribute.
-
-Configure Fertilizer behavior for each environment, or run any setup code
-necessary beforehand. Configure factories to run in specific environments.
-Set a flag to determine which fields to find records by so duplicate seeds
-are not created. Deprecate existing seeds to ensure they are no longer
-present. Deprecated seeds are destroyed by provided attributes.
-
-```ruby
-# config/seeds/fertilizers/user_fertilizer.rb
-UserFertilizer < Nitrogen::Fertilizer
-  unique_by :email
-
-  all_environments do
-    create(first_name: 'Jonny', last_name: 'Smith', email: 'jsmith@gmail.com')
-    create(first_name: 'Sally', last_name: 'Jones', email: 'sjones@gmail.com')
-
-    deprecate(email: 'deprecated@gmail.com')
-  end
-
-  factory_for :development, :staging do
-    first_name { Forgery(:person).first_name }
-    last_name { Forgery(:person).last_name }
-    email { Forgery(:person).email }
-    aliases
-  end
-
-  forgery_for :aliases do
-    dictionaries[:aliases].random
-  end
-
-end
 ```
 
 `rails generate` hooks are also provided for the `model`, and `scaffold`
