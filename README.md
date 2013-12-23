@@ -1,8 +1,32 @@
 # :tulip: Nitrogen 0.0.1 Draft Spec
 
-A better way to seed your application.
-
 #### Warning: This library is a Draft Specification. Not for Production use.
+
+Nitrogen provides a simple and robust system for seeding your application.
+
+## Features
+
+#### Easy to Use
+
+Comes with an installation task and hooks into your generators to start seeding
+out of the box.
+
+#### :heart:'s Ruby
+
+Embraces a powerful configuration language you already know: *Ruby*. No more fiddling
+with XML, YAML, HAML, or ALABAML. Ok, we made up ALABAML...
+
+#### Clean
+
+Nitrogen makes your `config/seed.rb` clean and easy to understand. It also provides
+a canonical folder and file structure that is easy to digest.
+
+#### Free Development Data
+
+Fertilizers provide a structured and simple way to generate fake data for use in
+development. This is a much faster and better way to bootstrap an application
+rather than passing around production dumps.
+
 
 ## Getting Started
 
@@ -188,7 +212,7 @@ generators. A `rails generate seed` command is also provided to bootstrap
 a new seed.
 
 ## Unresolved Items
-* Defining Nitrogen's philosophy
 * Defining Nitrogen's Fertilizer API for record creation
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/7f62cda8c7463b7a556e9085b8100926 "githalytics.com")](http://githalytics.com/josephjaber/nitrogen)
+
