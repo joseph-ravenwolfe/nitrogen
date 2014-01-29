@@ -64,6 +64,9 @@ end
 You can also specify which models depend on the existance of other models when
 defining your seeds.
 
+- [ ] Dependency support
+- [x] Factory support
+
 ```ruby
 # config/seeds.rb
 Nitrogen::Seeds.plant do
